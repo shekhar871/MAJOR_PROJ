@@ -9,7 +9,7 @@ async function fetchFiles() {
       headers: { 'Authorization': `Bearer ${token}` }
     });
     const files = await res.json();
-    if (!files.length) {
+    if (!Array.isArray(files) || !files.length) {
       tbody.innerHTML = '<tr><td colspan="4">No files received yet.</td></tr>';
       return;
     }
@@ -26,10 +26,12 @@ async function fetchFiles() {
   }
 }
 
-function showTab(name) {
-  // Simple view switcher
-  console.log("Switching to tab:", name);
+async function generatePairingCode() {
+  const res = await fetch(`${API_URL}/pairings`, {
+    method: 'POST',
+    headers: { 'Authorization': `Bearer ${token}` }
+  });
+  return await res.json();
 }
 
-// Initial fetch
 fetchFiles();

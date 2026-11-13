@@ -1,0 +1,80 @@
+erDiagram
+    users ||--o{ devices : owns
+    devices ||--o{ pairing_codes : creates
+    devices ||--o{ notes : writes
+    devices ||--o{ tasks : assigns
+    devices ||--o{ files : uploads
+    devices ||--o{ activity_logs : triggers
+
+    users {
+        uuid user_id PK
+        string full_name
+        string email UK
+        string password_hash
+        timestamp created_at
+    }
+
+    devices {
+        uuid device_id PK
+        uuid user_id FK
+        string device_name
+        string platform
+        boolean is_active
+        timestamp last_seen_at
+        timestamp created_at
+    }
+
+    pairing_codes {
+        uuid pairing_id PK
+        uuid created_by_device_id FK
+        uuid consumed_by_device_id FK
+        string code_hash UK
+        timestamp expires_at
+        timestamp used_at
+        timestamp created_at
+    }
+
+    notes {
+        uuid note_id PK
+        uuid device_id FK
+        string title
+        string body
+        boolean is_pinned
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    tasks {
+        uuid task_id PK
+        uuid device_id FK
+        string title
+        string description
+        string priority
+        string status
+        timestamp due_at
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    files {
+        uuid file_id PK
+        uuid source_device_id FK
+        uuid target_device_id FK
+        string original_name
+        string storage_key UK
+        string mime_type
+        bigint size_bytes
+        string checksum_sha256
+        string direction
+        string status
+        timestamp created_at
+    }
+
+    activity_logs {
+        uuid activity_id PK
+        uuid device_id FK
+        string action_type
+        string target_type
+        string target_id
+        timestamp created_at
+    }

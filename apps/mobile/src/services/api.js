@@ -22,3 +22,5 @@ export async function apiRequest(endpoint, options = {}) {
   if (!res.ok) throw new Error(data.error?.message || 'Request failed');
   return data;
 }
+
+// Added network timeout retry

@@ -120,3 +120,5 @@ router.delete('/:id', requireAuth, async (req, res, next) => {
 });
 
 module.exports = router;
+
+// Path traversal guard verified

@@ -72,7 +72,7 @@ Usage:
   try {
     if (command === 'status') {
       const res = await request('/health');
-      console.log('✅ PocketBridge API Status:', res.status, '| Service:', res.service);
+      console.log('[OK] PocketBridge API Status:', res.status, '| Service:', res.service);
     } else if (command === 'tasks' && args[1] === 'list') {
       const tasks = await request('/tasks');
       console.log(`Found ${tasks.length} tasks:`);
@@ -85,16 +85,16 @@ Usage:
       const msg = args.slice(2).join(' ');
       if (!msg) throw new Error('Provide a note message');
       const note = await request('/notes', 'POST', { title: 'CLI Quick Note', body: msg });
-      console.log('✅ Note created:', note.note_id);
+      console.log('[OK] Note created:', note.note_id);
     } else if (command === 'set-token') {
       const token = args[1];
       saveConfig({ ...getConfig(), token });
-      console.log('✅ Token saved to local config.');
+      console.log('[OK] Token saved to local config.');
     } else {
       console.log(`Unknown command: ${command}. Type 'pocketbridge --help' for available commands.`);
     }
   } catch (err) {
-    console.error('❌ Error:', err.message);
+    console.error('[ERROR]', err.message);
   }
 }
 

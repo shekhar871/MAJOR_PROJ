@@ -1,0 +1,16 @@
+node_modules/
+.env
+.env.*
+!.env.example
+.expo/
+dist/
+build/
+coverage/
+server/storage/**
+!server/storage/.gitkeep
+*.log
+.DS_Store
+*.sqlite
+*.db
+apps/cli/.pocketbridge*
+.tmp_builder/

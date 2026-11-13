@@ -83,3 +83,21 @@ CREATE TABLE activity_logs (
     target_id VARCHAR(64) NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
+
+
+-- Constraints & Check Definitions
+ALTER TABLE devices ADD CONSTRAINT chk_devices_platform CHECK (platform IN ('android', 'ios', 'desktop', 'cli'));
+ALTER TABLE tasks ADD CONSTRAINT chk_tasks_priority CHECK (priority IN ('low', 'medium', 'high'));
+ALTER TABLE tasks ADD CONSTRAINT chk_tasks_status CHECK (status IN ('todo', 'in_progress', 'done'));
+ALTER TABLE files ADD CONSTRAINT chk_files_size CHECK (size_bytes > 0 AND size_bytes <= 26214400);
+ALTER TABLE files ADD CONSTRAINT chk_files_direction CHECK (direction IN ('to_desktop', 'to_mobile'));
+ALTER TABLE files ADD CONSTRAINT chk_files_status CHECK (status IN ('stored', 'deleted', 'failed'));
+
+-- Performance Indexes
+CREATE UNIQUE INDEX IF NOT EXISTS uq_users_email ON users (email);
+CREATE INDEX IF NOT EXISTS idx_devices_user_active ON devices (user_id, is_active);
+CREATE INDEX IF NOT EXISTS idx_pairing_codes_expiry ON pairing_codes (expires_at);
+CREATE INDEX IF NOT EXISTS idx_notes_device_updated ON notes (device_id, updated_at DESC);
+CREATE INDEX IF NOT EXISTS idx_tasks_device_status_due ON tasks (device_id, status, due_at);
+CREATE INDEX IF NOT EXISTS idx_files_source_created ON files (source_device_id, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_activity_device_created ON activity_logs (device_id, created_at DESC);

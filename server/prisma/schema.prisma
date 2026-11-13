@@ -1,0 +1,111 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id           String    @id @default(uuid()) @map("user_id")
+  fullName     String    @map("full_name") @db.VarChar(120)
+  email        String    @unique @db.VarChar(191)
+  passwordHash String    @map("password_hash") @db.VarChar(255)
+  createdAt    DateTime  @default(now()) @map("created_at")
+  devices      Device[]
+
+  @@map("users")
+}
+
+model Device {
+  id              String         @id @default(uuid()) @map("device_id")
+  userId          String         @map("user_id")
+  deviceName      String         @map("device_name") @db.VarChar(100)
+  platform        String         @db.VarChar(20)
+  isActive        Boolean        @default(true) @map("is_active")
+  lastSeenAt      DateTime       @default(now()) @map("last_seen_at")
+  createdAt       DateTime       @default(now()) @map("created_at")
+  user            User           @relation(fields: [userId], references: [id])
+  createdPairings PairingCode[]  @relation("CreatedPairings")
+  consumedPairings PairingCode[] @relation("ConsumedPairings")
+  notes           Note[]
+  tasks           Task[]
+  uploadedFiles   FileRecord[]   @relation("SourceFiles")
+  receivedFiles   FileRecord[]   @relation("TargetFiles")
+  activities      ActivityLog[]
+
+  @@map("devices")
+}
+
+model PairingCode {
+  id                   String    @id @default(uuid()) @map("pairing_id")
+  createdByDeviceId    String    @map("created_by_device_id")
+  consumedByDeviceId   String?   @map("consumed_by_device_id")
+  codeHash             String    @unique @map("code_hash") @db.VarChar(64)
+  expiresAt            DateTime  @map("expires_at")
+  usedAt               DateTime? @map("used_at")
+  createdAt            DateTime  @default(now()) @map("created_at")
+  createdByDevice      Device    @relation("CreatedPairings", fields: [createdByDeviceId], references: [id], onDelete: Cascade)
+  consumedByDevice     Device?   @relation("ConsumedPairings", fields: [consumedByDeviceId], references: [id])
+
+  @@map("pairing_codes")
+}
+
+model Note {
+  id        String   @id @default(uuid()) @map("note_id")
+  deviceId  String   @map("device_id")
+  title     String   @db.VarChar(200)
+  body      String
+  isPinned  Boolean  @default(false) @map("is_pinned")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+  device    Device   @relation(fields: [deviceId], references: [id])
+
+  @@map("notes")
+}
+
+model Task {
+  id          String    @id @default(uuid()) @map("task_id")
+  deviceId    String    @map("device_id")
+  title       String    @db.VarChar(200)
+  description String    @default("")
+  priority    String    @default("medium") @db.VarChar(10)
+  status      String    @default("todo") @db.VarChar(20)
+  dueAt       DateTime? @map("due_at")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @default(now()) @updatedAt @map("updated_at")
+  device      Device    @relation(fields: [deviceId], references: [id])
+
+  @@map("tasks")
+}
+
+model FileRecord {
+  id              String   @id @default(uuid()) @map("file_id")
+  sourceDeviceId  String   @map("source_device_id")
+  targetDeviceId  String?  @map("target_device_id")
+  originalName    String   @map("original_name") @db.VarChar(255)
+  storageKey      String   @unique @map("storage_key") @db.VarChar(255)
+  mimeType        String   @map("mime_type") @db.VarChar(100)
+  sizeBytes       BigInt   @map("size_bytes")
+  checksumSha256  String   @map("checksum_sha256") @db.VarChar(64)
+  direction       String   @default("to_desktop") @db.VarChar(20)
+  status          String   @default("stored") @db.VarChar(20)
+  createdAt       DateTime @default(now()) @map("created_at")
+  sourceDevice    Device   @relation("SourceFiles", fields: [sourceDeviceId], references: [id])
+  targetDevice    Device?  @relation("TargetFiles", fields: [targetDeviceId], references: [id])
+
+  @@map("files")
+}
+
+model ActivityLog {
+  id         String   @id @default(uuid()) @map("activity_id")
+  deviceId   String   @map("device_id")
+  actionType String   @map("action_type") @db.VarChar(50)
+  targetType String   @map("target_type") @db.VarChar(50)
+  targetId   String   @map("target_id") @db.VarChar(64)
+  createdAt  DateTime @default(now()) @map("created_at")
+  device     Device   @relation(fields: [deviceId], references: [id], onDelete: Cascade)
+
+  @@map("activity_logs")
+}

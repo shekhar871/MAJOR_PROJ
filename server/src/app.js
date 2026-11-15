@@ -13,7 +13,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Routes
+// Routes configuration and error boundary
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', service: 'pocketbridge-api', timestamp: new Date().toISOString() });
 });

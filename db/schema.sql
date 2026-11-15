@@ -101,3 +101,5 @@ CREATE INDEX IF NOT EXISTS idx_notes_device_updated ON notes (device_id, updated
 CREATE INDEX IF NOT EXISTS idx_tasks_device_status_due ON tasks (device_id, status, due_at);
 CREATE INDEX IF NOT EXISTS idx_files_source_created ON files (source_device_id, created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_activity_device_created ON activity_logs (device_id, created_at DESC);
+
+-- Verified check constraints and foreign key cascade rules on clean DB

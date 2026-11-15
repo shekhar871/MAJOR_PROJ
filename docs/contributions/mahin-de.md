@@ -1,20 +1,14 @@
 # Subject Contribution Report: Data Engineering (DE)
-**Contributor:** Mahin Patel  
-**Subject:** Data Engineering (DE)
+**Lead Contributor:** Mahin Patel  
+**Collaborators:** Kunal Kumar Jha, Shekhar Jadhav
 
-### Key Deliverables Completed:
-1. **Relational Database Design & ER Model:**
-   - Designed 7 core entities: `users`, `devices`, `pairing_codes`, `notes`, `tasks`, `files`, `activity_logs`.
-   - Built editable Mermaid source in `db/er/er-diagram.mmd`.
-2. **Third Normal Form (3NF) Normalization:**
-   - Proved 1NF, 2NF, and 3NF across all entities.
-   - Designed `device_id` foreign keys in `notes`, `tasks`, and `files` to avoid transitive dependencies on `user_id`.
-   - Stored binary files outside PostgreSQL under `server/storage/`, storing only metadata and SHA-256 checksums in DB.
-3. **DDL Constraints & Indexes:**
-   - Implemented `CHECK` constraints for platform, task status/priority, and file size limits (25MB cap).
-   - Created B-tree indexes for device-scaffolded queries and timestamps.
-4. **ACID Transactions & Concurrency Test:**
-   - Authored pessimistic row locking strategy (`SELECT ... FOR UPDATE`) for one-time pairing codes.
-   - Verified that simultaneous pairing attempts return `409 Conflict` without orphaned records.
-5. **SQL Reporting Queries:**
-   - Authored reports for task breakdown, daily file transfer volumes, and device activity summaries.
+### Primary Responsibilities (Mahin):
+- Designed relational ER model with 7 core tables: `users`, `devices`, `pairing_codes`, `notes`, `tasks`, `files`, and `activity_logs`.
+- Drafted complete 3NF normalization justification (`db/docs/normalization-3nf.md`) explaining atomic fields, whole-key dependencies, and why binary files are stored on disk instead of Postgres BLOBs.
+- Created `schema.sql` with primary keys, foreign key constraints, check constraints (`platform`, `status`, `priority`), and indexes.
+- Implemented ACID concurrency analysis and `SELECT ... FOR UPDATE` row-locking proof for device pairing (`db/docs/acid-concurrency.md`).
+- Wrote analytical queries for task distribution, daily file upload statistics, and device activity (`db/queries/reports.sql`).
+
+### Cross-Subject Contributions:
+- **In ASD (Backend):** Collaborated with Kunal on connecting `pg` pool queries with transaction rollbacks during pairing token consumption.
+- **In ISD (Frontend):** Tested Electron desktop file lists against database row insertions to confirm synchronization.

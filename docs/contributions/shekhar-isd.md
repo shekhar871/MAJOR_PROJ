@@ -1,19 +1,14 @@
 # Subject Contribution Report: Interactive Systems Development (ISD)
-**Contributor:** Shekhar Jadhav  
-**Subject:** Interactive Systems Development (ISD)
+**Lead Contributor:** Shekhar Jadhav  
+**Collaborators:** Kunal Kumar Jha, Mahin Patel
 
-### Key Deliverables Completed:
-1. **Mobile Application (React Native / Expo):**
-   - Clean authentication interface with state validation and error alerts.
-   - QR code pairing scanner and manual fallback code entry.
-   - Interactive Notes & Tasks management screens with live CRUD states.
-   - Mobile document picker integration for local file uploads.
-2. **Desktop Companion (Electron + React):**
-   - Native desktop application window.
-   - Pairing screen generating short-lived QR codes for mobile discovery.
-   - Received file inbox displaying file names, sizes, source devices, and direct download links.
-3. **Lightweight Terminal CLI (`pocketbridge`):**
-   - Implemented standalone Node.js CLI tool.
-   - Supported commands: `pocketbridge status`, `tasks list`, `files list`, `notes add <msg>`.
-4. **Client-Server Integration:**
-   - Successfully verified complete LAN workflow: phone -> API -> desktop inbox & notes.
+### Primary Responsibilities (Shekhar):
+- Built React Native / Expo mobile app screens: Auth (login/register with form validation), Home dashboard, QR pairing view with manual code fallback, and Notes/Tasks manager.
+- Implemented file upload flow from phone using document picker and upload progress handling.
+- Built Electron desktop companion app with file inbox table, quick download links, and one-time pairing QR code display.
+- Created lightweight Node.js terminal CLI (`pocketbridge`) with commands for `status`, `tasks list`, `files list`, and `notes add`.
+- Handled UI edge cases: empty states, loading indicators, token expiration re-login, and local LAN IP configuration.
+
+### Cross-Subject Contributions:
+- **In DE (Database):** Created realistic demo seed data (`db/seeds/seed.sql`) containing sample users, notes, tasks, and devices.
+- **In ASD (Backend):** Wrote API test scripts in `server/tests/api.test.js` to verify routing and error responses before frontend integration.

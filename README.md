@@ -1,41 +1,37 @@
 # PocketBridge
-> A local-first smartphone and computer companion system.
 
-PocketBridge connects your phone and laptop over the same local Wi-Fi network without relying on third-party cloud drives or messaging intermediaries.
+PocketBridge is a local-first system designed to transfer files, notes, and tasks directly between a smartphone and a laptop connected to the same Wi-Fi network, without needing cloud services like Google Drive or messaging apps.
 
----
+## Team Members and Roles
 
-## Project Team and Subject Deliverables
+We worked collaboratively across all three areas (DE, ASD, and ISD) so everyone has hands-on understanding of the entire system:
 
-| Member | Subject | Primary Deliverable | Owned Directory |
-| :--- | :--- | :--- | :--- |
-| **Mahin Patel** | **DE** (Data Engineering) | ER Model, PostgreSQL Schema, 3NF Proof, SQL Reports and Concurrency Tests | `db/` |
-| **Kunal Kumar Jha** | **ASD** (App Software Dev) | Express REST API, JWT/bcrypt Auth, Pairing Logic, Multer File Service | `server/`, `docs/api-contract.md` |
-| **Shekhar Jadhav** | **ISD** (Interactive Systems) | React Native Mobile App, Electron Desktop App, lightweight Terminal CLI | `apps/` |
+- **Mahin Patel**: Lead on Database Engineering (schema design, 3NF normalization, SQL reporting) + contributed to backend DB pool setup and desktop testing.
+- **Kunal Kumar Jha**: Lead on Backend & APIs (Express API architecture, JWT authentication, file upload/stream) + contributed to SQL queries and mobile API integration.
+- **Shekhar Jadhav**: Lead on Client Applications (React Native mobile app, Electron desktop companion, CLI) + contributed to API testing and database seed generation.
 
----
+## Project Structure
 
-## Architecture and Highlights
+```
+pocketbridge/
+├── apps/
+│   ├── mobile/       # React Native / Expo mobile application
+│   ├── desktop/      # Electron desktop companion application
+│   └── cli/          # Node.js command-line interface
+├── server/           # Express REST API with Prisma ORM
+│   ├── src/          # Controllers, routes, and middleware
+│   └── storage/      # Local uploaded files (gitignored)
+└── db/               # PostgreSQL schema, seeds, queries, and reports
+```
 
-- **Local-First REST API:** Built with Node.js and Express running on the computer LAN interface.
-- **Relational PostgreSQL and 3NF:** 7 core tables strictly normalized in 3NF.
-- **Atomic Device Pairing:** Concurrency-safe one-time QR pairing protected with PostgreSQL row-level locks (`SELECT FOR UPDATE`).
-- **File Handoff:** Binary files saved to local filesystem (`server/storage/`), tracked via UUID keys and SHA-256 checksums in the database.
-- **Cross-Platform Clients:**
-  - **Mobile:** React Native / Expo.
-  - **Desktop:** Electron + React companion.
-  - **Terminal:** Node.js command-line interface.
+## How to Run
 
----
-
-## Quick Setup Guide
-
-### 1. Database Setup (PostgreSQL)
+### 1. Database Setup
+Make sure PostgreSQL is running locally on port 5432:
 ```bash
-# Create database and apply schema + seeds
-psql -U postgres -d postgres -c "CREATE DATABASE pocketbridge;"
-psql -U postgres -d pocketbridge -f db/schema.sql
-psql -U postgres -d pocketbridge -f db/seeds/seed.sql
+createdb pocketbridge
+psql -d pocketbridge -f db/schema.sql
+psql -d pocketbridge -f db/seeds/seed.sql
 ```
 
 ### 2. Backend Server
@@ -44,36 +40,33 @@ cd server
 npm install
 cp ../.env.example .env
 npm start
-# Server listens on http://0.0.0.0:4000
 ```
+The server will run on `http://0.0.0.0:4000`.
 
-### 3. Mobile App (Expo)
+### 3. Mobile Client
 ```bash
 cd apps/mobile
 npm install
 npm start
 ```
 
-### 4. Desktop Client (Electron)
+### 4. Desktop Client
 ```bash
 cd apps/desktop
 npm install
 npm start
 ```
 
-### 5. Terminal CLI
+### 5. CLI Tool
 ```bash
 cd apps/cli
 node pocketbridge.js status
 node pocketbridge.js tasks list
 ```
 
----
-
-## Project Documentation
-- [Data Dictionary and ERD](file:///Users/shekharjadhav/Downloads/MAJOR_PROJ/db/docs/data-dictionary.md)
-- [3NF Normalization Analysis](file:///Users/shekharjadhav/Downloads/MAJOR_PROJ/db/docs/normalization-3nf.md)
-- [ACID and Concurrency Proof](file:///Users/shekharjadhav/Downloads/MAJOR_PROJ/db/docs/acid-concurrency.md)
-- [REST API Contract](file:///Users/shekharjadhav/Downloads/MAJOR_PROJ/docs/api-contract.md)
-- [Individual Contributions](file:///Users/shekharjadhav/Downloads/MAJOR_PROJ/docs/contributions/)
-- [AI Chat Index](file:///Users/shekharjadhav/Downloads/MAJOR_PROJ/docs/ai-history/AI-CHAT-INDEX.md)
+## Documentation
+- [Data Dictionary](db/docs/data-dictionary.md)
+- [3NF Normalization Report](db/docs/normalization-3nf.md)
+- [ACID and Concurrency Test](db/docs/acid-concurrency.md)
+- [API Contract](docs/api-contract.md)
+- [Individual Contribution Summaries](docs/contributions/)

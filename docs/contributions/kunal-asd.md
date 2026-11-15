@@ -1,21 +1,15 @@
 # Subject Contribution Report: Application Software Development (ASD)
-**Contributor:** Kunal Kumar Jha  
-**Subject:** Application Software Development (ASD)
+**Lead Contributor:** Kunal Kumar Jha  
+**Collaborators:** Mahin Patel, Shekhar Jadhav
 
-### Key Deliverables Completed:
-1. **REST API Architecture & Bootstrap:**
-   - Initialized modular Express application with CORS, JSON parsing, and centralized error handling.
-   - Built Prisma ORM schema mirroring PostgreSQL tables.
-2. **Authentication & Authorization:**
-   - Implemented `POST /api/auth/register` with atomic user & initial device creation.
-   - Bcrypt password hashing (10 salt rounds) and JWT signing/verification.
-   - Scoped authorization middleware verifying active device ownership on every protected endpoint.
-3. **Pairing Code Lifecycle:**
-   - Single-use 5-minute pairing code generation.
-   - Atomic consumption endpoint utilizing row-level locks to prevent double-consumption race conditions.
-4. **File Handling:**
-   - Multer streaming integration with 25MB cap.
-   - UUID storage keys on local filesystem and SHA-256 checksum calculation.
-   - Owner-validated file streaming and download routes.
-5. **API Contract & Documentation:**
-   - Published complete REST contract in `docs/api-contract.md`.
+### Primary Responsibilities (Kunal):
+- Bootstrapped Node.js + Express backend server with CORS, JSON body parser, and centralized error handling middleware.
+- Built authentication system using `bcrypt` password hashing (10 salt rounds) and signed JWT tokens with device association.
+- Developed `POST /api/pairings` and `POST /api/pairings/consume` endpoints with 5-minute expiration and atomic consumption locks.
+- Implemented file streaming upload/download service using `multer` with a 25MB cap, UUID storage naming, and SHA-256 integrity checksum verification.
+- Implemented CRUD REST APIs for Notes and Tasks with status filtering and ownership checks.
+- Documented full API endpoint specifications and JSON contracts in `docs/api-contract.md`.
+
+### Cross-Subject Contributions:
+- **In DE (Database):** Reviewed SQL constraints with Mahin and built the Prisma schema mirroring the relational tables.
+- **In ISD (Frontend):** Assisted Shekhar with debugging multipart/form-data boundary handling for mobile document uploads.

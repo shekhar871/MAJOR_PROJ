@@ -35,3 +35,5 @@ async function generatePairingCode() {
 }
 
 fetchFiles();
+
+// Shekhar: added auto-refresh for received files table

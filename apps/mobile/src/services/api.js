@@ -24,3 +24,5 @@ export async function apiRequest(endpoint, options = {}) {
 }
 
 // Added network timeout retry
+
+// Shekhar: added network timeout and retry handling
